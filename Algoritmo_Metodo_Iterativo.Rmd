@@ -1,0 +1,50 @@
+---
+title: "Algoritmo_Metodo_Iterativo"
+output: pdf_document
+date: "2026-04-30"
+---
+
+```{r, include=FALSE}
+library(dplyr)
+library(tidyverse)
+```
+
+```{r, include = FALSE}
+##O carregamento dos R.Datas abaixo não devem permancer na versão final deste algorítmo:
+
+load("C:/Users/Marcos/OneDrive/PRODUÇÕES/SEMINÁRIOS-CONGRESSOS/ABEP/ABEP 2026/Artigo Pop raça-cor/Metodo_intercensal/04_pop_intep_final.RData")
+
+N2012.df <- pop_intep_final %>%
+  select(codigo_municipio, sexo, cor_raca, idade, pop12) %>%
+  mutate(idade = ifelse(idade >= 80, 80, idade)) %>% 
+  group_by(sexo, cor_raca, idade) %>%
+  summarise(N2012 = sum(pop12), .groups = "drop") # Aqui resolve o problema
+  
+write.csv(N2012.df, 'C:/Users/Marcos/OneDrive/PRODUÇÕES/ARTIGOS/EM ELABORAÇÃO/lt-raca-cor-CSP/GitHub_files/Input/pop2012.csv', row.names = F)
+
+load("C:/Users/Marcos/OneDrive/PRODUÇÕES/SEMINÁRIOS-CONGRESSOS/ABEP/ABEP 2026/Artigo Pop raça-cor/Pop_BR_Muni22_Cor_Raca.RData")
+
+N2022.df <- dados_final %>%
+  mutate(faixa_idade = as.numeric(str_remove(as.character(faixa_idade), "\\+"))) %>%
+  select(codigo_municipio, sexo, cor_raca, faixa_idade, populacao) %>%
+  mutate(faixa_idade = ifelse(faixa_idade >= 80, 80, faixa_idade)) %>% 
+  group_by(sexo, cor_raca, faixa_idade) %>%
+  summarise(N2022=sum(populacao), na.rm = TRUE, .groups = "drop") %>%
+  rename(idade = faixa_idade) %>%
+  ungroup()
+
+write.csv(N2022.df, 'C:/Users/Marcos/OneDrive/PRODUÇÕES/ARTIGOS/EM ELABORAÇÃO/lt-raca-cor-CSP/GitHub_files/Input/pop2022.csv', row.names = F)
+
+```
+
+### **Algoritmo para aplicação do Método Iterativo Intercensal**
+
+O código abaixo carrega os dados de input necessários, que estão disponíveis no repositório do GitHun.
+
+
+
+
+
+
+
+
